@@ -352,7 +352,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.insert_key = false
   config.ssh.forward_agent = true
   config.ssh.username = vconfig['vagrant_user']
-  
+
   # #config.ssh.private_key_path = ['~/.vagrant.d/insecure_private_key', '~/.ssh/id_rsa']
   # Vagrant box.
   config.vm.box = vconfig['vagrant_box']
@@ -402,8 +402,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision provisioner do |ansible|
     ansible.playbook = playbook
     ansible.extra_vars = {
-      oah_config_dir: oah_config_dir
-      oah_env_name: oah_env_name
+      oah_config_dir: oah_config_dir,
+      oah_env_name: oah_env_name,
       oah_env_user: oah_env_user
     }
     ansible.raw_arguments = Shellwords.shellsplit(ENV['OAH_ANSIBLE_ARGS']) if ENV['OAH_ANSIBLE_ARGS']
