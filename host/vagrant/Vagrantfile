@@ -199,7 +199,8 @@ vconfig = load_config([
 # Get env name from configuration file,
 # Do we need to check OAH_ENV_NAME environment variable as well ? can this be used to test switching environments
 oah_env_name = vconfig['oah_env_name']
-guest_oah_env_dir = "/#{oah_env_user}/#{ENV['OAH_DIR']}/data/env/#{oah_env_name}"
+#TODO check if .oah can be some other folder
+guest_oah_env_dir = "/#{oah_env_user}/.oah/data/env/#{oah_env_name}"
 guest_config_dir = ENV['OAH_CONFIG_DIR'] ? "#{guest_oah_env_dir}/#{ENV['OAH_CONFIG_DIR']}" : guest_oah_env_dir
 
 puts " oah_env_user => #{oah_env_user}"
