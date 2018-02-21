@@ -403,7 +403,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision provisioner do |ansible|
     ansible.playbook = playbook
     ansible.extra_vars = {
-      oah_config_dir: oah_config_dir,
+      config_dir: config_dir,
       oah_env_name: oah_env_name,
       oah_env_user: oah_env_user
     }
