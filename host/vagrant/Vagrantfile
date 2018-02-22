@@ -84,8 +84,8 @@ end
 def ensure_plugins(plugins)
   logger = Vagrant::UI::Colored.new
   installed = false
-
-  plugins.each do |plugin|
+  #added &. to skip nil
+  plugins&.each do |plugin|
     plugin_name = plugin['name']
     manager = Vagrant::Plugin::Manager.instance
 
@@ -111,7 +111,8 @@ end
 ## OAH Apache specific function
 def get_apache_vhosts(vhosts)
   aliases = []
-  vhosts.each do |host|
+  #added &. to skip nil
+  vhosts&.each do |host|
     aliases.push(host['servername'])
     aliases.concat(host['serveralias'].split) if host['serveralias']
   end
@@ -122,7 +123,8 @@ end
 
 def get_nginx_vhosts(vhosts)
   aliases = []
-  vhosts.each do |host|
+  #added &. to skip nil
+  vhosts&.each do |host|
     aliases.push(host['server_name'])
     aliases.concat(host['server_name_redirect'].split) if host['server_name_redirect']
   end
