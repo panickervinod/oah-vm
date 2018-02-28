@@ -6,7 +6,7 @@ require 'yaml'
 VAGRANTFILE_API_VERSION = "2"
 Vagrant.require_version '>= 1.8.1'
 
-
+### Start of oah vagrant library methods
 # Cross-platform way of finding an executable in the $PATH.
 def which(cmd)
   exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
@@ -18,7 +18,6 @@ def which(cmd)
   end
   return nil
 end
-
 
 
 # Recursively walk an tree and run provided block on each value found.
@@ -152,16 +151,19 @@ def get_default_post_up_message(vconfig)
 
 end
 
+def dump_vars
+  puts " oah_env_user => #{oah_env_user}"
+  puts " oah_user => #{oah_user}"
+  puts " host_oah_env_dir => #{host_oah_env_dir}"
+  puts " host_config_dir => #{host_config_dir}"
+  puts " host_project_dir => #{host_project_dir}"
+  puts " guest_config_dir => #{guest_config_dir}"
+  puts " guest_oah_env_dir => #{guest_oah_env_dir}"
+  puts " oah_env_name => #{oah_env_name}"
+  puts " oah_env_type => #{oah_env_type}"
+end
 
-#dir = File.dirname(File.expand_path(__FILE__))
-# dir = File.dirname("../../../")
-#
-# if !File.exist?("#{dir}/oah-config.yml")
-#   raise "Configuration file #{dir}/oah-config.yml not found!  Please copy example.oah-config.yml to oah-config.yml and try again."
-# end
-# vconfig = YAML::load_file("#{dir}/oah-config.yml")
-
-
+### End of oah vagrant library methods
 
 # oah_env_user defaults to vagrant unless set by the oah.user role
 oah_env_user = ENV['OAH_ENV_USER'] || "vagrant"
@@ -205,15 +207,16 @@ oah_env_name = vconfig['oah_env_name']
 guest_oah_env_dir = "/#{oah_env_user}/.oah/data/env/#{oah_env_name}"
 guest_config_dir = ENV['OAH_CONFIG_DIR'] ? "#{guest_oah_env_dir}/#{ENV['OAH_CONFIG_DIR']}" : guest_oah_env_dir
 
-puts " oah_env_user => #{oah_env_user}"
-puts " oah_user => #{oah_user}"
-puts " host_oah_env_dir => #{host_oah_env_dir}"
-puts " host_config_dir => #{host_config_dir}"
-puts " host_project_dir => #{host_project_dir}"
-puts " guest_config_dir => #{guest_config_dir}"
-puts " guest_oah_env_dir => #{guest_oah_env_dir}"
-puts " oah_env_name => #{oah_env_name}"
-puts " oah_env_type => #{oah_env_type}"
+dump_vars
+# puts " oah_env_user => #{oah_env_user}"
+# puts " oah_user => #{oah_user}"
+# puts " host_oah_env_dir => #{host_oah_env_dir}"
+# puts " host_config_dir => #{host_config_dir}"
+# puts " host_project_dir => #{host_project_dir}"
+# puts " guest_config_dir => #{guest_config_dir}"
+# puts " guest_oah_env_dir => #{guest_oah_env_dir}"
+# puts " oah_env_name => #{oah_env_name}"
+# puts " oah_env_type => #{oah_env_type}"
 
 # install on host machine if force_ansible_local
 provisioner = vconfig['force_ansible_local'] ? :ansible_local : vagrant_provisioner
@@ -262,75 +265,7 @@ Vagrant.require_version ">= #{vconfig['oah_vagrant_version_min']}"
 
 ensure_plugins(vconfig['vagrant_plugins'])
 
-
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  # config.vm.hostname = vconfig['vagrant_hostname']
-  # if vconfig['vagrant_ip'] == "0.0.0.0" && Vagrant.has_plugin?("vagrant-auto_network")
-  #   config.vm.network :private_network, :ip => vconfig['vagrant_ip'], :auto_network => true
-  # else
-  #   config.vm.network :private_network, ip: vconfig['vagrant_ip']
-  # end
-  #
-  # if !vconfig['vagrant_public_ip'].empty? && vconfig['vagrant_public_ip'] == "0.0.0.0"
-  #   config.vm.network :public_network
-  # elsif !vconfig['vagrant_public_ip'].empty?
-  #   config.vm.network :public_network, ip: vconfig['vagrant_public_ip']
-  # end
-  #
-  # config.ssh.insert_key = true
-  # config.ssh.forward_agent = true
-  # config.ssh.username = vconfig['vagrant_user']
-  # #config.ssh.private_key_path = ['~/.vagrant.d/insecure_private_key', '~/.ssh/id_rsa']
-  #
-  # config.vm.box = vconfig['vagrant_box']
-  #
-  #
-  # for synced_folder in vconfig['vagrant_synced_folders'];
-  #   config.vm.synced_folder synced_folder['local_path'], synced_folder['destination'],
-  #     type: synced_folder['type'],
-  #     rsync__auto: "true",
-  #     rsync__exclude: synced_folder['excluded_paths'],
-  #     rsync__args: ["--verbose", "--archive", "--delete", "-z", "--chmod=ugo=rwX"],
-  #     id: synced_folder['id'],
-  #     create: synced_folder.include?('create') ? synced_folder['create'] : false,
-  #     mount_options: synced_folder.include?('mount_options') ? synced_folder['mount_options'] : []
-  # end
-  #
-  # config.vm.provision "shell", inline: $script
-  # # Provision using Ansible provisioner if Ansible is installed on host.
-  #
-  # if which('ansible-playbook')
-  #   config.vm.provision "ansible" do |ansible|
-  #     ansible.playbook = "#{dir}/provisioning/oah-install.yml"
-  #     ansible.sudo = true
-  #     # ansible.extra_vars = {
-  #     #   config_dir: config_dir,
-  #     #   oah_env: oah_env
-  #     # }
-  #   end
-  # else
-  #   config.vm.provision "ansible_local" do |ansible|
-  #     ansible.playbook = "../../provisioning/oah-install.yml"
-  #     ansible.galaxy_role_file = "../../provisioning/oah-requirements.yml"
-  #     # ansible.extra_vars = {
-  #     #   config_dir: config_dir,
-  #     #   oah_env: oah_env
-  #     # }
-  #   end
-  # end
-  #
-  # # VirtualBox.
-  # config.vm.provider :virtualbox do |v|
-  #   v.name = vconfig['vagrant_hostname']
-  #   v.memory = vconfig['vagrant_memory']
-  #   v.cpus = vconfig['vagrant_cpus']
-  #   v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-  #   v.customize ["modifyvm", :id, "--ioapic", "on"]
-  #   v.gui=vconfig['oah_vm_gui']
-  # end
-  #
-  # config.vm.define vconfig['vagrant_machine_name'] do |d|
-  # end
 
   # Set the name of the VM.
   config.vm.define vconfig['vagrant_machine_name']
