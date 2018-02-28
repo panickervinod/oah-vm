@@ -151,18 +151,6 @@ def get_default_post_up_message(vconfig)
 
 end
 
-def dump_vars
-  puts " oah_env_user => #{oah_env_user}"
-  puts " oah_user => #{oah_user}"
-  puts " host_oah_env_dir => #{host_oah_env_dir}"
-  puts " host_config_dir => #{host_config_dir}"
-  puts " host_project_dir => #{host_project_dir}"
-  puts " guest_config_dir => #{guest_config_dir}"
-  puts " guest_oah_env_dir => #{guest_oah_env_dir}"
-  puts " oah_env_name => #{oah_env_name}"
-  puts " oah_env_type => #{oah_env_type}"
-end
-
 ### End of oah vagrant library methods
 
 # oah_env_user defaults to vagrant unless set by the oah.user role
@@ -207,16 +195,16 @@ oah_env_name = vconfig['oah_env_name']
 guest_oah_env_dir = "/#{oah_env_user}/.oah/data/env/#{oah_env_name}"
 guest_config_dir = ENV['OAH_CONFIG_DIR'] ? "#{guest_oah_env_dir}/#{ENV['OAH_CONFIG_DIR']}" : guest_oah_env_dir
 
-dump_vars
-# puts " oah_env_user => #{oah_env_user}"
-# puts " oah_user => #{oah_user}"
-# puts " host_oah_env_dir => #{host_oah_env_dir}"
-# puts " host_config_dir => #{host_config_dir}"
-# puts " host_project_dir => #{host_project_dir}"
-# puts " guest_config_dir => #{guest_config_dir}"
-# puts " guest_oah_env_dir => #{guest_oah_env_dir}"
-# puts " oah_env_name => #{oah_env_name}"
-# puts " oah_env_type => #{oah_env_type}"
+
+puts " oah_env_user => #{oah_env_user}"
+puts " oah_user => #{oah_user}"
+puts " host_oah_env_dir => #{host_oah_env_dir}"
+puts " host_config_dir => #{host_config_dir}"
+puts " host_project_dir => #{host_project_dir}"
+puts " guest_config_dir => #{guest_config_dir}"
+puts " guest_oah_env_dir => #{guest_oah_env_dir}"
+puts " oah_env_name => #{oah_env_name}"
+puts " oah_env_type => #{oah_env_type}"
 
 # install on host machine if force_ansible_local
 provisioner = vconfig['force_ansible_local'] ? :ansible_local : vagrant_provisioner
