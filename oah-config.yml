@@ -41,14 +41,15 @@ vagrant_cpus: 2
 
 vagrant_plugins:
   - name: vagrant-vbguest
-  - name: vagrant-hostsupdater
+#  - name: vagrant-hostsupdater
+ - name: vagrant-hostmanager
 
 # Minimum required versions.
 oah_vagrant_version_min: '1.8.6'
 oah_ansible_version_min: '2.2'
 # Force use of ansible_local provisioner, even if Ansible is installed on host.
 force_ansible_local: false
-  
+
 # # The web server software to use. Can be either 'apache' or 'nginx'.
 # oahvm_webserver: apache
 
